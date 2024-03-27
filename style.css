@@ -1,0 +1,107 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "JetBrains Mono", monospace;
+     background-color: #111414;
+     color: white;
+
+     height: 100vh;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+
+     overflow: hidden;
+}
+
+#window {
+    position: absolute;
+    width: 800px;
+    height: 450px;
+    background-color: #1f1f1f;
+    border-radius: 0 0 8px 8px ;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+}
+
+.titlebar {
+    display: flex;
+    background-color: #414141;
+    padding: 10px;
+    border-radius: 8px 8px 0 0;
+}
+
+.titlebar .action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.action-buttons div {
+    width: 15px;
+    height: 15px;
+    border-radius: 100px;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.action-buttons div.red {
+    background-color: #F5544D;
+}
+.action-buttons div.yellow {
+    background-color: #FABD2F;
+}
+.action-buttons div.green {
+    background-color: #47D043;
+}
+
+.titlebar a {
+    display: inline-block;
+    flex: 1;
+    color: #9c9c9c;
+    text-align: center;
+    text-decoration: none;
+    margin-left: -30px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#terminal {
+    padding: 10px;
+}
+
+.general-output {
+    color: #A9B1D6;
+    font-weight: 400;
+}
+
+.welcome {
+    margin-top: 30px;
+}
+
+.prompt-container {
+    padding: 10px;
+}
+
+#prompt {
+    color: #58D786;
+}
+
+#command-input {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    color: white;
+    
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.prompt-result {
+    margin-top: 30px;
+}
