@@ -6,24 +6,27 @@
 
 body {
     font-family: "JetBrains Mono", monospace;
-     background-color: #111414;
-     color: white;
+    background-color: #111414;
+    color: white;
 
-     height: 100vh;
-     display: flex;
-     align-items: center;
-     justify-content: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-     overflow: hidden;
+    overflow: hidden;
 }
 
 #window {
     position: absolute;
-    width: 800px;
+    width: 700px;
     height: 450px;
     background-color: #1f1f1f;
-    border-radius: 0 0 8px 8px ;
+    border-radius: 0 0 8px 8px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 60px 40px -7px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 .titlebar {
@@ -47,13 +50,13 @@ body {
 }
 
 .action-buttons div.red {
-    background-color: #F5544D;
+    background-color: #f5544d;
 }
 .action-buttons div.yellow {
-    background-color: #FABD2F;
+    background-color: #fabd2f;
 }
 .action-buttons div.green {
-    background-color: #47D043;
+    background-color: #47d043;
 }
 
 .titlebar a {
@@ -69,23 +72,43 @@ body {
 
 #terminal {
     padding: 10px;
+    max-height: 100%;
+    overflow-y: scroll;
+}
+
+#terminal::-webkit-scrollbar {
+    width: 5px;
+}
+
+#terminal::-webkit-scrollbar-track {
+    background-color: rgba(169, 169, 169, 0.144);
+}
+
+#terminal::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 100px;
+    cursor: pointer;
 }
 
 .general-output {
-    color: #A9B1D6;
+    color: #a9b1d6;
     font-weight: 400;
 }
 
 .welcome {
-    margin-top: 30px;
+    margin-top: 10px;
 }
 
 .prompt-container {
     padding: 10px;
 }
 
+.prompt-container.prompt-history {
+    margin-top: 10px;
+}
+
 #prompt {
-    color: #58D786;
+    color: #58d786;
 }
 
 #command-input {
@@ -93,7 +116,10 @@ body {
     outline: none;
     border: none;
     color: white;
-    
+
+    caret-color: #47d043;
+    caret-shape: block;
+
     font-family: inherit;
     font-size: 16px;
 }
@@ -103,5 +129,19 @@ body {
 }
 
 .prompt-result {
-    margin-top: 30px;
+    margin-top: 10px;
+}
+
+.prompt-result.success {
+    color: white;
+}
+
+.prompt-result.error {
+    color: crimson;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    color: #a9b1d6;
 }

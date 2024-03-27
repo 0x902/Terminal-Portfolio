@@ -1,120 +1,150 @@
-const terminalEl = document.getElementById("terminal")
-const promptContainerEl = document.querySelector(".prompt-container")
+import { dragElement } from "./interactive.js";
 
+const windowEl = document.getElementById("window");
+const terminalEl = document.getElementById("terminal");
+const commandInputContainer = document.querySelector(".prompt-container");
+let commandInputEl;
+
+// enable window dragging
 dragElement(document.getElementById("window"));
 
-const commandList = {
-    help : `
-    help -> list available commands
-    about -> about me
-    projects -> projects list
-    `,
-    about : "I'm Yasir Ahmed"
-}
+const promptLabelCaret = "λ :: ~ >>";
 
+// valid commands and responses
+const commandList = {
+    help: [
+        "help -> list available commands",
+        "about -> about myself",
+        "skills -> my skills",
+        "clear -> clear the terminal",
+        "exit -> exit the terminal",
+    ],
+
+    about: [
+        "👋 I'm Yasir Ahmed, aka 0x902.",
+        "✨ I'm a first-year student from Sri Lanka.",
+        "🧑‍💻 I'm currently studying computer science.",
+        "☕ I have a strong passion for coding and design.",
+    ],
+
+    skills: [
+        "I'm proficient in,",
+        "🌐 Html, CSS and Javascript",
+        "🖌️ Figma, Photoshop, Blender",
+        "⌨️ C, Java, Python",
+        "🗄️ MySQL, Firbase",
+    ],
+
+    invalid: ["Invalid command", `Type "help" to see available commands.`],
+};
 
 function initializeTerminal() {
-    const now = new Date()
-    const nowString = `${now.getDate()}/${now.getMonth()}/${now.getFullYear()} | ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`
-    const initOutputs = [":: starting session...", `:: session started -> ${nowString}`]
+    const now = new Date();
+    const nowString = `${now.getDate()}/${now.getMonth()}/${now.getFullYear()} | ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+    const initCommands = [
+        ":: starting session...",
+        `:: session started -> ${nowString}`,
+    ];
 
-    let delay = 0
-    
-    initOutputs.forEach(output => {
+    let delay = 0;
+    initCommands.forEach((output) => {
         setTimeout(() => {
-            const outputEl = document.createElement("p")
-            outputEl.classList.add("general-output")
-            outputEl.textContent = output
+            const div = document.createElement("p");
+            div.classList.add("general-output");
+            div.textContent = output;
 
-            terminalEl.append(outputEl)
-        }, delay += 1200)
-    })
+            terminalEl.append(div);
+        }, (delay += 1200));
+    });
 }
 
-function showWelcomeMessage(executeCommand) {
+function showWelcomeMessage() {
     setTimeout(() => {
-        const welcomeMessage = `:: Type "help" to see available commands.`
-    
-        const outputEl = document.createElement("p")
-        outputEl.classList.add("welcome")
-        outputEl.textContent = welcomeMessage
-    
-        terminalEl.append(outputEl)
-    }, 4200)
+        const welcomeMessage = `:: Type "help" to see available commands.`;
+
+        const p = document.createElement("p");
+        p.classList.add("welcome");
+        p.textContent = welcomeMessage;
+
+        terminalEl.append(p);
+    }, 4200);
 }
 
 function showPrompt() {
     setTimeout(() => {
-        promptContainerEl.classList.remove("hidden")
-        const commandInputEl = promptContainerEl.querySelector("#command-input")
-        commandInputEl.focus()
+        commandInputContainer.classList.remove("hidden");
+        commandInputEl = commandInputContainer.querySelector("#command-input");
+        commandInputEl.focus();
 
-        commandInputEl.onblur = function(e) {
+        // maintain focus on input element
+        commandInputEl.onblur = function () {
             var blurEl = this;
             setTimeout(() => {
-                blurEl.focus()
-            },10)
-        }
+                blurEl.focus();
+            }, 10);
+        };
 
         commandInputEl.addEventListener("keydown", (e) => {
-            if(e.key === "Enter") {
-                executeCommand(commandInputEl.value)
+            if (e.key === "Enter") {
+                executeCommand(commandInputEl.value);
             }
-        })
-    }, 4200)
+        });
+    }, 4200);
 }
 
 function executeCommand(command) {
-    if(commandList[command]) {
-        const outputEl = document.createElement("p")
-        outputEl.classList.add("prompt-result")
-        outputEl.textContent = commandList[command]
+    // display the entered command
+    displayPrompt(command);
+    commandInputEl.value = "";
 
-        terminalEl.append(outputEl)
+    switch (command) {
+        case "clear":
+            terminalEl.textContent = "";
+            break;
+        case "exit":
+            windowEl.remove();
+        default:
+            if (commandList[command]) {
+                displayOutput(command, "success");
+            } else {
+                displayOutput("invalid", "error");
+            }
     }
 }
 
-function dragElement(elmnt) {
-    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    if (document.getElementById(elmnt.id + "header")) {
-      // if present, the header is where you move the DIV from:
-      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-    } else {
-      // otherwise, move the DIV from anywhere inside the DIV:
-      elmnt.onmousedown = dragMouseDown;
-    }
-  
-    function dragMouseDown(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // get the mouse cursor position at startup:
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      document.onmouseup = closeDragElement;
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementDrag;
-    }
-  
-    function elementDrag(e) {
-      e = e || window.event;
-      e.preventDefault();
-      // calculate the new cursor position:
-      pos1 = pos3 - e.clientX;
-      pos2 = pos4 - e.clientY;
-      pos3 = e.clientX;
-      pos4 = e.clientY;
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-    }
-  
-    function closeDragElement() {
-      // stop moving when mouse button is released:
-      document.onmouseup = null;
-      document.onmousemove = null;
-    }
-  }
+function displayPrompt(command) {
+    const div = document.createElement("div");
+    div.innerHTML = `
+    <div class="prompt-container">
+        <label for="command-input" id="prompt">${promptLabelCaret} ${command}</label>
+        <input
+            id="command-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            autofocus
+            disabled
+        />
+    </div>
+    `;
+    terminalEl.append(div);
+}
 
-initializeTerminal()
-showWelcomeMessage()
-showPrompt()
+function displayOutput(command, type) {
+    const promptResult = document.createElement("div");
+
+    promptResult.classList.add("prompt-result");
+    promptResult.classList.add(type);
+    commandList[command].forEach((output) => {
+        const p = document.createElement("p");
+        p.textContent = output;
+        promptResult.append(p);
+    });
+
+    terminalEl.append(promptResult);
+    promptResult.scrollIntoView();
+}
+
+initializeTerminal();
+showWelcomeMessage();
+showPrompt();
