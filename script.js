@@ -3,10 +3,11 @@ import { dragElement } from "./interactive.js";
 const windowEl = document.getElementById("window");
 const terminalEl = document.getElementById("terminal");
 const commandInputContainer = document.querySelector(".prompt-container");
+const themeSwitchBtn = document.getElementById("theme-switch-btn")
 let commandInputEl;
 
 // enable window dragging
-dragElement(document.getElementById("window"));
+// dragElement(document.getElementById("window"));
 
 const promptLabelCaret = "λ :: ~ >>";
 
@@ -32,7 +33,7 @@ const commandList = {
         "🌐 Html, CSS and Javascript",
         "🖌️ Figma, Photoshop, Blender",
         "⌨️ C, Java, Python",
-        "🗄️ MySQL, Firbase",
+        "🗄️  MySQL, Firebase",
     ],
 
     invalid: ["Invalid command", `Type "help" to see available commands.`],
@@ -144,6 +145,9 @@ function displayOutput(command, type) {
     terminalEl.append(promptResult);
     promptResult.scrollIntoView();
 }
+
+
+
 
 initializeTerminal();
 showWelcomeMessage();
